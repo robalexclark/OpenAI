@@ -1,0 +1,11 @@
+@PatientApp.Api_HostAddress = http://localhost:5189
+
+GET {{PatientApp.Api_HostAddress}}/patients
+Accept: application/json
+
+###
+
+GET {{PatientApp.Api_HostAddress}}/patients/1
+Accept: application/json
+
+###
