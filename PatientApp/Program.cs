@@ -20,7 +20,11 @@ namespace PatientApp
                 .AddBootstrap5Providers()
                 .AddFontAwesomeIcons();
 
-            builder.Services.AddHttpClient();
+            var apiBaseUrl = builder.Configuration.GetValue<string>("ApiBaseUrl", "http://localhost:5189/");
+            builder.Services.AddScoped(_ => new HttpClient
+            {
+                BaseAddress = new Uri(apiBaseUrl)
+            });
 
             var app = builder.Build();
 
