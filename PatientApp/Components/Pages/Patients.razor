@@ -1,19 +1,54 @@
 @page "/patients"
 
+@using System.Linq
+@using Blazorise
+
 <PageTitle>Patients</PageTitle>
 
-<DataGrid TItem="Patient" Data="@patients" Sortable="true" RowStyling="@OnRowStyling">
+<DataGrid TItem="Patient" Data="@patients" Sortable="true">
     <DataGridColumns>
         <DataGridColumn TItem="Patient" Field="@nameof(Patient.Initials)" Caption="Initials" />
         <DataGridColumn TItem="Patient" Field="@nameof(Patient.DateOfBirth)" Caption="Date of Birth" />
         <DataGridColumn TItem="Patient" Field="@nameof(Patient.AddedAt)" Caption="Added At" />
         <DataGridColumn TItem="Patient" Field="@nameof(Patient.Pill)" Caption="Pill" />
         <DataGridColumn TItem="Patient" Field="@nameof(Patient.AllocatedAt)" Caption="Allocated At" />
+        <DataGridColumn TItem="Patient" Caption="">
+            <DisplayTemplate Context="patient">
+                @if (patient.Pill == Pill.None)
+                {
+                    <Tooltip Text="Randomise">
+                        <Button Color="Color.Primary" Size="Size.Small" Disabled="@IsRandomisationComplete" Clicked="@(() => OpenRandomiseModal(patient))">
+                            <Icon Name="IconName.Random" />
+                        </Button>
+                    </Tooltip>
+                }
+            </DisplayTemplate>
+        </DataGridColumn>
     </DataGridColumns>
 </DataGrid>
 
+<Modal @ref="randomiseModal">
+    <ModalContent>
+        <ModalHeader>Randomise Patient</ModalHeader>
+        <ModalBody>
+            <TextEdit @bind-Text="modalInitials" MaxLength="10" />
+        </ModalBody>
+        <ModalFooter>
+            <Button Color="Color.Primary" Disabled="@(!IsInitialsValid)" Clicked="@ConfirmRandomise">Confirm</Button>
+            <Button Color="Color.Secondary" Clicked="@CancelRandomise">Cancel</Button>
+        </ModalFooter>
+    </ModalContent>
+</Modal>
+
 @code {
     private List<Patient> patients = new();
+
+    private Modal? randomiseModal;
+    private Patient? selectedPatient;
+    private string modalInitials = string.Empty;
+
+    private bool IsRandomisationComplete => patients.Count(p => p.Pill == Pill.Red) >= 2 && patients.Count(p => p.Pill == Pill.Blue) >= 2;
+    private bool IsInitialsValid => !string.IsNullOrWhiteSpace(modalInitials) && modalInitials.Length <= 10 && modalInitials.All(char.IsLetter);
 
     [Inject]
     private HttpClient Http { get; set; } = default!;
@@ -27,11 +62,41 @@
         }
     }
 
-    private void OnRowStyling(DataGridRowStylingEventArgs<Patient> e)
+    private Task OpenRandomiseModal(Patient patient)
     {
-        if (e.Item.Pill != Pill.None)
+        selectedPatient = patient;
+        modalInitials = string.Empty;
+        return randomiseModal?.Show() ?? Task.CompletedTask;
+    }
+
+    private async Task ConfirmRandomise()
+    {
+        if (selectedPatient is null)
         {
-            e.Style = "background-color: violet;";
+            return;
         }
+
+        var response = await Http.PostAsJsonAsync($"patients/{selectedPatient.Id}/randomise", new { Initials = modalInitials });
+        if (response.IsSuccessStatusCode)
+        {
+            var updated = await response.Content.ReadFromJsonAsync<Patient>();
+            if (updated is not null)
+            {
+                var index = patients.FindIndex(p => p.Id == updated.Id);
+                if (index >= 0)
+                {
+                    patients[index] = updated;
+                }
+            }
+        }
+
+        await randomiseModal!.Hide();
+        selectedPatient = null;
+    }
+
+    private Task CancelRandomise()
+    {
+        selectedPatient = null;
+        return randomiseModal!.Hide();
     }
 }
