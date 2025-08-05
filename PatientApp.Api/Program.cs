@@ -1,10 +1,10 @@
 using Microsoft.EntityFrameworkCore;
 using PatientApp.Api;
-using PatientApp.Shared;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+builder.Services.AddControllers();
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
 builder.Services.AddDbContext<StudyContext>(opt =>
@@ -26,13 +26,6 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-app.MapGet("/patients", async (StudyContext db) => await db.Patients.ToListAsync())
-   .WithName("GetPatients");
-
-app.MapGet("/patients/{id:guid}", async (Guid id, StudyContext db) =>
-    await db.Patients.FindAsync(id) is Patient patient
-        ? Results.Ok(patient)
-        : Results.NotFound())
-   .WithName("GetPatientById");
+app.MapControllers();
 
 app.Run();
