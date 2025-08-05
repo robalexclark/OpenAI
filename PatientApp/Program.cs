@@ -1,4 +1,5 @@
 using PatientApp.Components;
+using PatientApp.Services;
 
 namespace PatientApp
 {
@@ -11,6 +12,13 @@ namespace PatientApp
             // Add services to the container.
             builder.Services.AddRazorComponents()
                 .AddInteractiveServerComponents();
+
+            builder.Services.AddHttpClient<ApiClient>(client =>
+            {
+                var baseUrl = builder.Configuration["ApiBaseUrl"] ?? "http://localhost";
+                client.BaseAddress = new Uri(baseUrl);
+            });
+            builder.Services.AddScoped<PatientService>();
 
             var app = builder.Build();
 
