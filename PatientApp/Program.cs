@@ -36,10 +36,6 @@ namespace PatientApp
 
             app.UseAntiforgery();
 
-            app.Services
-                .UseBootstrap5Providers()
-                .UseFontAwesomeIcons();
-
             app.MapStaticAssets();
             app.MapRazorComponents<App>()
                 .AddInteractiveServerRenderMode();
