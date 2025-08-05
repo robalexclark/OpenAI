@@ -10,4 +10,10 @@
     <ProjectReference Include="..\PatientApp.Shared\PatientApp.Shared.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <PackageReference Include="Blazorise.Bootstrap5" Version="1.8.0" />
+    <PackageReference Include="Blazorise.DataGrid" Version="1.8.0" />
+    <PackageReference Include="Blazorise.Icons.FontAwesome" Version="1.8.0" />
+  </ItemGroup>
+
 </Project>

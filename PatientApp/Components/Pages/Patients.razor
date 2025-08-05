@@ -1,0 +1,37 @@
+@page "/patients"
+
+<PageTitle>Patients</PageTitle>
+
+<DataGrid TItem="Patient" Data="@patients" Sortable="true" RowStyling="@OnRowStyling">
+    <DataGridColumns>
+        <DataGridColumn TItem="Patient" Field="@nameof(Patient.Initials)" Caption="Initials" />
+        <DataGridColumn TItem="Patient" Field="@nameof(Patient.DateOfBirth)" Caption="Date of Birth" />
+        <DataGridColumn TItem="Patient" Field="@nameof(Patient.AddedAt)" Caption="Added At" />
+        <DataGridColumn TItem="Patient" Field="@nameof(Patient.Pill)" Caption="Pill" />
+        <DataGridColumn TItem="Patient" Field="@nameof(Patient.AllocatedAt)" Caption="Allocated At" />
+    </DataGridColumns>
+</DataGrid>
+
+@code {
+    private List<Patient> patients = new();
+
+    [Inject]
+    private HttpClient Http { get; set; } = default!;
+
+    protected override async Task OnInitializedAsync()
+    {
+        var result = await Http.GetFromJsonAsync<List<Patient>>("patients?sort=AddedAt&desc=true");
+        if (result is not null)
+        {
+            patients = result;
+        }
+    }
+
+    private void OnRowStyling(DataGridRowStylingEventArgs<Patient> e)
+    {
+        if (e.Item.Pill != Pill.None)
+        {
+            e.Style = "background-color: violet;";
+        }
+    }
+}
