@@ -4,6 +4,7 @@ using System.Net.Http;
 using System.Text;
 using System.Text.Json;
 using System.Threading;
+using System.Linq;
 using Bunit;
 using PatientApp.Components.Pages;
 using PatientApp.Shared;
@@ -33,7 +34,7 @@ public class PatientsPageTests : TestContext
         var cut = RenderComponent<Patients>();
 
         // Assert
-        var button = cut.Find("button");
+        var button = cut.Find("tbody button");
         Assert.False(button.HasAttribute("disabled"));
     }
 
@@ -58,8 +59,46 @@ public class PatientsPageTests : TestContext
         var cut = RenderComponent<Patients>();
 
         // Assert
-        var button = cut.Find("button");
+        var button = cut.Find("tbody button");
         Assert.True(button.HasAttribute("disabled"));
+    }
+
+    [Fact]
+    public void Shows_message_when_all_patients_have_pills()
+    {
+        // Arrange
+        var patients = new[]
+        {
+            new Patient { Id = Guid.NewGuid(), Initials = "AA", Pill = Pill.Red },
+            new Patient { Id = Guid.NewGuid(), Initials = "BB", Pill = Pill.Blue }
+        };
+        var handler = new FakeHttpMessageHandler(JsonSerializer.Serialize(patients));
+        Services.AddSingleton(new HttpClient(handler) { BaseAddress = new Uri("http://localhost") });
+        Services.AddBlazorise().AddBootstrap5Providers().AddFontAwesomeIcons();
+        JSInterop.Mode = JSRuntimeMode.Loose;
+
+        // Act
+        var cut = RenderComponent<Patients>();
+
+        // Assert
+        Assert.Contains("All patients already have pills", cut.Markup);
+    }
+
+    [Fact]
+    public void Shows_message_when_no_patients_exist()
+    {
+        // Arrange
+        var patients = Array.Empty<Patient>();
+        var handler = new FakeHttpMessageHandler(JsonSerializer.Serialize(patients));
+        Services.AddSingleton(new HttpClient(handler) { BaseAddress = new Uri("http://localhost") });
+        Services.AddBlazorise().AddBootstrap5Providers().AddFontAwesomeIcons();
+        JSInterop.Mode = JSRuntimeMode.Loose;
+
+        // Act
+        var cut = RenderComponent<Patients>();
+
+        // Assert
+        Assert.Contains("No patients available", cut.Markup);
     }
 }
 
