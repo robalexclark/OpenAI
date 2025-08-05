@@ -1,9 +1,6 @@
-using System;
-using System.Linq;
-using Microsoft.EntityFrameworkCore;
-using PatientApp.Api;
-using Xunit;
+﻿using Microsoft.EntityFrameworkCore;
 
+namespace PatientApp.Api.Tests;
 public class StudyContextTests
 {
     [Fact]
@@ -19,4 +16,3 @@ public class StudyContextTests
         Assert.Equal(4, context.Patients.Count());
     }
 }
-

@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Net;
 using System.Net.Http;
 using System.Text;
@@ -21,17 +21,17 @@ public class PatientsPageTests : TestContext
     public void Shows_randomise_button_for_unallocated_patient()
     {
         // Arrange
-        var patients = new[]
+        var home = new[]
         {
             new Patient { Id = Guid.NewGuid(), Initials = "AA", Pill = Pill.None }
         };
-        var handler = new FakeHttpMessageHandler(JsonSerializer.Serialize(patients));
+        var handler = new FakeHttpMessageHandler(JsonSerializer.Serialize(home));
         Services.AddSingleton(new HttpClient(handler) { BaseAddress = new Uri("http://localhost") });
         Services.AddBlazorise().AddBootstrap5Providers().AddFontAwesomeIcons();
         JSInterop.Mode = JSRuntimeMode.Loose;
 
         // Act
-        var cut = RenderComponent<Patients>();
+        var cut = RenderComponent<Home>();
 
         // Assert
         var button = cut.Find("tbody button");
@@ -42,7 +42,7 @@ public class PatientsPageTests : TestContext
     public void Disables_randomise_button_when_allocation_complete()
     {
         // Arrange
-        var patients = new[]
+        var home = new[]
         {
             new Patient { Id = Guid.NewGuid(), Initials = "AA", Pill = Pill.Red },
             new Patient { Id = Guid.NewGuid(), Initials = "BB", Pill = Pill.Red },
@@ -50,13 +50,13 @@ public class PatientsPageTests : TestContext
             new Patient { Id = Guid.NewGuid(), Initials = "DD", Pill = Pill.Blue },
             new Patient { Id = Guid.NewGuid(), Initials = "EE", Pill = Pill.None }
         };
-        var handler = new FakeHttpMessageHandler(JsonSerializer.Serialize(patients));
+        var handler = new FakeHttpMessageHandler(JsonSerializer.Serialize(home));
         Services.AddSingleton(new HttpClient(handler) { BaseAddress = new Uri("http://localhost") });
         Services.AddBlazorise().AddBootstrap5Providers().AddFontAwesomeIcons();
         JSInterop.Mode = JSRuntimeMode.Loose;
 
         // Act
-        var cut = RenderComponent<Patients>();
+        var cut = RenderComponent<Home>();
 
         // Assert
         var button = cut.Find("tbody button");
@@ -67,18 +67,18 @@ public class PatientsPageTests : TestContext
     public void Shows_message_when_all_patients_have_pills()
     {
         // Arrange
-        var patients = new[]
+        var home = new[]
         {
             new Patient { Id = Guid.NewGuid(), Initials = "AA", Pill = Pill.Red },
             new Patient { Id = Guid.NewGuid(), Initials = "BB", Pill = Pill.Blue }
         };
-        var handler = new FakeHttpMessageHandler(JsonSerializer.Serialize(patients));
+        var handler = new FakeHttpMessageHandler(JsonSerializer.Serialize(home));
         Services.AddSingleton(new HttpClient(handler) { BaseAddress = new Uri("http://localhost") });
         Services.AddBlazorise().AddBootstrap5Providers().AddFontAwesomeIcons();
         JSInterop.Mode = JSRuntimeMode.Loose;
 
         // Act
-        var cut = RenderComponent<Patients>();
+        var cut = RenderComponent<Home>();
 
         // Assert
         Assert.Contains("All patients already have pills", cut.Markup);
@@ -88,14 +88,14 @@ public class PatientsPageTests : TestContext
     public void Shows_message_when_no_patients_exist()
     {
         // Arrange
-        var patients = Array.Empty<Patient>();
-        var handler = new FakeHttpMessageHandler(JsonSerializer.Serialize(patients));
+        var home = Array.Empty<Patient>();
+        var handler = new FakeHttpMessageHandler(JsonSerializer.Serialize(home));
         Services.AddSingleton(new HttpClient(handler) { BaseAddress = new Uri("http://localhost") });
         Services.AddBlazorise().AddBootstrap5Providers().AddFontAwesomeIcons();
         JSInterop.Mode = JSRuntimeMode.Loose;
 
         // Act
-        var cut = RenderComponent<Patients>();
+        var cut = RenderComponent<Home>();
 
         // Assert
         Assert.Contains("No patients available", cut.Markup);

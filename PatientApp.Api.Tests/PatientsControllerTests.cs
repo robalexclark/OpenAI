@@ -1,12 +1,9 @@
-using System;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using PatientApp.Api;
 using PatientApp.Api.Controllers;
 using PatientApp.Shared;
-using Xunit;
+
+namespace PatientApp.Api.Tests;
 
 public class PatientsControllerTests
 {
