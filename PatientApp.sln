@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PatientApp", "PatientApp\Pa
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PatientApp.Shared", "PatientApp.Shared\PatientApp.Shared.csproj", "{AD86F2B9-6159-4929-BFED-A1E8174177C9}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PatientApp.Api.Tests", "PatientApp.Api.Tests\PatientApp.Api.Tests.csproj", "{941CEE9C-B409-43A9-B670-FD51AC3F51A4}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -55,6 +57,18 @@ Global
 		{AD86F2B9-6159-4929-BFED-A1E8174177C9}.Release|x64.Build.0 = Release|Any CPU
 		{AD86F2B9-6159-4929-BFED-A1E8174177C9}.Release|x86.ActiveCfg = Release|Any CPU
 		{AD86F2B9-6159-4929-BFED-A1E8174177C9}.Release|x86.Build.0 = Release|Any CPU
+		{941CEE9C-B409-43A9-B670-FD51AC3F51A4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{941CEE9C-B409-43A9-B670-FD51AC3F51A4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{941CEE9C-B409-43A9-B670-FD51AC3F51A4}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{941CEE9C-B409-43A9-B670-FD51AC3F51A4}.Debug|x64.Build.0 = Debug|Any CPU
+		{941CEE9C-B409-43A9-B670-FD51AC3F51A4}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{941CEE9C-B409-43A9-B670-FD51AC3F51A4}.Debug|x86.Build.0 = Debug|Any CPU
+		{941CEE9C-B409-43A9-B670-FD51AC3F51A4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{941CEE9C-B409-43A9-B670-FD51AC3F51A4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{941CEE9C-B409-43A9-B670-FD51AC3F51A4}.Release|x64.ActiveCfg = Release|Any CPU
+		{941CEE9C-B409-43A9-B670-FD51AC3F51A4}.Release|x64.Build.0 = Release|Any CPU
+		{941CEE9C-B409-43A9-B670-FD51AC3F51A4}.Release|x86.ActiveCfg = Release|Any CPU
+		{941CEE9C-B409-43A9-B670-FD51AC3F51A4}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
