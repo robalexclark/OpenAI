@@ -15,25 +15,21 @@ else if (patients.All(p => p.Pill != Pill.None))
 }
 <Button Color="Color.Secondary" Size="Size.Small" Clicked="@ResetData">Reset Data</Button>
 
-<DataGrid TItem="Patient" Data="@patients" Sortable="true">
+<DataGrid TItem="Patient" Data="@patients" Sortable="true" Editable="true">
     <DataGridColumns>
         <DataGridColumn TItem="Patient" Field="@nameof(Patient.Initials)" Caption="Initials" />
         <DataGridColumn TItem="Patient" Field="@nameof(Patient.DateOfBirth)" Caption="Date of Birth" />
         <DataGridColumn TItem="Patient" Field="@nameof(Patient.AddedAt)" Caption="Added At" />
         <DataGridColumn TItem="Patient" Field="@nameof(Patient.Pill)" Caption="Pill" />
         <DataGridColumn TItem="Patient" Field="@nameof(Patient.AllocatedAt)" Caption="Allocated At" />
-        <DataGridColumn TItem="Patient" Caption="">
-            <DisplayTemplate Context="patient">
-                @if (patient.Pill == Pill.None)
+        <DataGridCommandColumn TItem="Patient" Caption="">
+            <EditCommandTemplate Context="context">
+                @if (context.Item.Pill == Pill.None)
                 {
-                    <Tooltip Text="Randomise">
-                        <Button Color="Color.Primary" Size="Size.Small" Disabled="@IsRandomisationComplete" Clicked="@(() => OpenRandomiseModal(patient))">
-                            <Icon Name="IconName.Random" />
-                        </Button>
-                    </Tooltip>
+                    <Button Color="Color.Primary" Size="Size.Small" Disabled="@IsRandomisationComplete" Clicked="@(() => OpenRandomiseModal(context.Item))">Randomise</Button>
                 }
-            </DisplayTemplate>
-        </DataGridColumn>
+            </EditCommandTemplate>
+        </DataGridCommandColumn>
     </DataGridColumns>
 </DataGrid>
 

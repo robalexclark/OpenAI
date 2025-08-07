@@ -34,7 +34,7 @@ public class PatientsPageTests : TestContext
         var cut = RenderComponent<Home>();
 
         // Assert
-        var button = cut.Find("tbody button");
+        var button = cut.FindAll("tbody button").First(b => b.TextContent.Contains("Randomise"));
         Assert.False(button.HasAttribute("disabled"));
     }
 
@@ -59,7 +59,7 @@ public class PatientsPageTests : TestContext
         var cut = RenderComponent<Home>();
 
         // Assert
-        var button = cut.Find("tbody button");
+        var button = cut.FindAll("tbody button").First(b => b.TextContent.Contains("Randomise"));
         Assert.True(button.HasAttribute("disabled"));
     }
 
