@@ -13,15 +13,9 @@ else if (patients.All(p => p.Pill != Pill.None))
 {
     <Alert Color="Color.Info">All patients already have pills.</Alert>
 }
+<Button Color="Color.Secondary" Size="Size.Small" Clicked="@ResetData">Reset Data</Button>
 
-<DataGrid TItem="Patient" Data="@patients" Sortable="true" ShowToolbar="true">
-    <ButtonRowTemplate>
-        <Tooltip Text="Reset Data">
-            <Button Color="Color.Secondary" Size="Size.Small" Clicked="@ResetData">
-                <Icon Name="IconName.Sync" />
-            </Button>
-        </Tooltip>
-    </ButtonRowTemplate>
+<DataGrid TItem="Patient" Data="@patients" Sortable="true">
     <DataGridColumns>
         <DataGridColumn TItem="Patient" Field="@nameof(Patient.Initials)" Caption="Initials" />
         <DataGridColumn TItem="Patient" Field="@nameof(Patient.DateOfBirth)" Caption="Date of Birth" />
